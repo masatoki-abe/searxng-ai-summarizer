@@ -1,0 +1,44 @@
+{
+    "manifest_version": 3,
+    "name": "SearXNG AI Summarizer",
+    "version": "1.0.0",
+    "description": "SearXNGの検索結果をAIで要約します。",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "action": {
+        "default_popup": "popup/index.html",
+        "default_title": "SearXNG AI Summarizer Settings"
+    },
+    "background": {
+        "scripts": [
+            "scripts/background.js"
+        ],
+        "type": "module"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "css": [
+                "styles/content.css"
+            ],
+            "js": [
+                "scripts/content.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "searxng-ai-summarizer@masatoki.com",
+            "strict_min_version": "109.0"
+        }
+    }
+}
