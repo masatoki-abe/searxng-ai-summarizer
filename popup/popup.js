@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (items.model) modelInput.value = items.model;
 
         if (!modelInput.value) {
-            modelInput.placeholder = 'gemini-1.5-flash';
+            modelInput.placeholder = 'gemini-2.5-flash-lite';
         }
     });
 
