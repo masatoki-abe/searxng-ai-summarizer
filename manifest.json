@@ -16,7 +16,8 @@
         "scripting"
     ],
     "host_permissions": [
-        "<all_urls>"
+        "*://*/search*",
+        "*://*/*q=*"
     ],
     "action": {
         "default_popup": "popup/index.html",
