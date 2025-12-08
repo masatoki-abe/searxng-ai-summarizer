@@ -16,8 +16,7 @@
         "scripting"
     ],
     "host_permissions": [
-        "*://*/search*",
-        "*://*/*q=*"
+        "https://generativelanguage.googleapis.com/*"
     ],
     "action": {
         "default_popup": "popup/index.html",
