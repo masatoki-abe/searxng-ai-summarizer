@@ -10,21 +10,20 @@
 
 <body>
   <div class="container">
-    <h2>SearXNG AI Config</h2>
+    <h2>SearXNG AI 設定</h2>
 
     <div class="form-group">
-      <label for="apiKey">Gemini API Key</label>
+      <label for="apiKey">Gemini API キー</label>
       <input type="password" id="apiKey" placeholder="AIzdSy...">
-      <small class="hint">Get key from <a href="https://aistudio.google.com/" target="_blank">Google AI
-          Studio</a></small>
+      <small class="hint"><a href="https://aistudio.google.com/" target="_blank">Google AI Studio</a> からキーを取得</small>
     </div>
 
     <div class="form-group">
-      <label for="model">Model Name (Optional)</label>
+      <label for="model">モデル名 (任意)</label>
       <input type="text" id="model" placeholder="gemini-2.5-flash-lite">
     </div>
 
-    <button id="saveBtn">Save Settings</button>
+    <button id="saveBtn">設定を保存</button>
     <div id="status" class="status"></div>
   </div>
   <script src="popup.js"></script>

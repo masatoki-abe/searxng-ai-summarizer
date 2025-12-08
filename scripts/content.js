@@ -43,7 +43,7 @@ function injectUI() {
     const btn = document.createElement('button');
     btn.id = 'searxng-ai-summary-btn';
     btn.className = 'ai-summary-btn';
-    btn.innerText = '✨ Summarize Results (AI)';
+    btn.innerText = '✨ AIで要約を実行';
     btn.onclick = handleSummarizeClick;
     btn.style.marginBottom = '0'; // Reset margin as it is in wrapper
 
@@ -67,12 +67,12 @@ async function handleSummarizeClick(e) {
     const snippets = getResultSnippets();
 
     if (!snippets) {
-        alert("No search results found to summarize.");
+        alert("要約対象の検索結果が見つかりません。");
         return;
     }
 
     btn.disabled = true;
-    btn.innerText = 'Generating Summary...';
+    btn.innerText = '要約を生成中...';
 
     // Ensure container is visible
     if (container) {
@@ -83,7 +83,7 @@ async function handleSummarizeClick(e) {
     try {
         console.log("Sending request to background...");
         // Await the response directly
-        const response = await chrome.runtime.sendMessage({
+        const response = await browser.runtime.sendMessage({
             action: 'summarize',
             text: snippets
         });
@@ -100,7 +100,7 @@ async function handleSummarizeClick(e) {
                 currentContainer.style.display = 'block';
                 currentContainer.innerHTML = `
                   <div class="ai-summary-header">
-                    <span class="ai-summary-title">✨ AI Summary</span>
+                     <span class="ai-summary-title">✨ AI要約結果</span>
                   </div>
                   <div class="ai-summary-content">${formatSummary(response.data)}</div>
                 `;
@@ -109,14 +109,14 @@ async function handleSummarizeClick(e) {
                 alert("Error: UI container missing.");
             }
 
-            btn.innerText = 'Summarize Results (AI)';
+            btn.innerText = 'AIで要約を実行';
         } else {
-            const errorMsg = response?.error || chrome.runtime.lastError?.message || "Unknown error";
+            const errorMsg = response?.error || browser.runtime.lastError?.message || "Unknown error";
             console.error("Async Error:", errorMsg);
             if (container) {
                 container.innerHTML = `<div style="color:red; font-weight:bold; padding:10px; border:1px solid red;">Error: ${errorMsg}</div>`;
             }
-            btn.innerText = 'Error - Try Again';
+            btn.innerText = 'エラー - 再試行';
             alert(`Summary Failed:\n${errorMsg}`);
         }
 
@@ -125,7 +125,7 @@ async function handleSummarizeClick(e) {
         if (container) {
             container.innerHTML = `<div style="color:red">Error: ${err.message}</div>`;
         }
-        btn.innerText = 'Error - Try Again';
+        btn.innerText = 'エラー - 再試行';
         alert(`Request Failed:\n${err.message}`);
     } finally {
         btn.disabled = false;

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusDiv = document.getElementById('status');
 
     // Load saved settings
-    chrome.storage.local.get(['apiKey', 'model'], (items) => {
+    browser.storage.local.get(['apiKey', 'model']).then((items) => {
         if (items.apiKey) apiKeyInput.value = items.apiKey;
         if (items.model) modelInput.value = items.model;
 
@@ -19,16 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const model = modelInput.value.trim();
 
         if (!apiKey) {
-            statusDiv.textContent = 'Please enter an API Key.';
+            statusDiv.textContent = 'APIキーを入力してください。';
             statusDiv.style.color = 'red';
             return;
         }
 
-        chrome.storage.local.set({
+        browser.storage.local.set({
             apiKey,
             model
-        }, () => {
-            statusDiv.textContent = 'Settings saved!';
+        }).then(() => {
+            statusDiv.textContent = '設定を保存しました！';
             statusDiv.style.color = '#333'; // Reset color or use success color
             setTimeout(() => {
                 statusDiv.textContent = '';

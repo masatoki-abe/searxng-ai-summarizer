@@ -1,22 +1,15 @@
 # SearXNG AI Summarizer
 
-SearXNGの検索結果をAI（Google Gemini）を使って要約するブラウザ拡張機能です。
+SearXNGの検索結果をAI（Google Gemini）を使って要約するFirefox拡張機能です。
 任意のSearXNGインスタンスで動作し、検索結果の概要を素早く把握することができます。
 
 ## 機能
 
 - **AI要約**: 検索結果の上位スニペットを抽出し、簡潔な日本語の要約を生成します。
 - **Gemini API対応**: 高速かつ高性能なGoogle Geminiモデル（`gemini-1.5-flash`等）を使用。
-- **クロスブラウザ**: Chrome, Firefoxで動作します。
 - **プライバシー**: APIキーはブラウザ内に安全に保存され、検索結果のテキストのみがAIに送信されます。
 
 ## インストール方法
-
-### Chrome / Edge / Brave
-1. このリポジトリをダウンロード（ZIP）して解凍、または `git clone` します。
-2. ブラウザのアドレスバーに `chrome://extensions` と入力します。
-3. 右上の「デベロッパーモード」をオンにします。
-4. 「パッケージ化されていない拡張機能を読み込む」をクリックし、このディレクトリを選択します。
 
 ### Firefox
 1. アドレスバーに `about:debugging#/runtime/this-firefox` と入力します。
