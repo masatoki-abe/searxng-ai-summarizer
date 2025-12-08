@@ -133,13 +133,30 @@ async function handleSummarizeClick(e) {
 }
 
 function formatSummary(text) {
-    // Simple markdown-ish to HTML or just text
-    // The API returns plain text usually, maybe markdown.
-    // We'll escape HTML and convert newlines.
-    return text
-        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>') // Bold
-        .replace(/\n/g, '<br>');
+    if (!text) return '';
+
+    // Helper to escape HTML characters
+    const escape = (str) => str.replace(/[&<>\n]/g, (tag) => {
+        const chars = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '\n': '<br>'
+        };
+        return chars[tag] || tag;
+    });
+
+    // Single pass replacement to ensure security
+    // Matches **bold** content OR individual special characters
+    // Using [\s\S] to match newlines within bold blocks
+    return text.replace(/(\*\*([\s\S]*?)\*\*)|([&<>\n])/g, (match, boldBlock, boldContent, specialChar) => {
+        if (boldBlock) {
+            // If it's a bold block, escape the content and wrap in <b>
+            return `<b>${escape(boldContent)}</b>`;
+        }
+        // If it's a special char outside bold, just escape it
+        return escape(match);
+    });
 }
 
 // Run logic
