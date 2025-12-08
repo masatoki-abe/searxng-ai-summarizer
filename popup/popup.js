@@ -18,11 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const apiKey = apiKeyInput.value.trim();
         const model = modelInput.value.trim();
 
+        if (!apiKey) {
+            statusDiv.textContent = 'Please enter an API Key.';
+            statusDiv.style.color = 'red';
+            return;
+        }
+
         chrome.storage.local.set({
             apiKey,
             model
         }, () => {
             statusDiv.textContent = 'Settings saved!';
+            statusDiv.style.color = '#333'; // Reset color or use success color
             setTimeout(() => {
                 statusDiv.textContent = '';
             }, 2000);
