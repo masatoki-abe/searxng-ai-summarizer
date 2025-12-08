@@ -10,7 +10,6 @@ body {
 .container {
   padding: 16px;
   background: white;
-  min-height: 100vh; /* Fill height implementation for mobile */
 }
 
 h2 {
@@ -31,16 +30,19 @@ label {
   font-size: 13px;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-sizing: border-box; /* Fix padding issue */
+  box-sizing: border-box;
+  /* Fix padding issue */
   font-size: 14px;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   border-color: #0070f3;
   outline: none;
 }
@@ -82,17 +84,22 @@ button:hover {
     background-color: #1a1a1a;
     color: #eee;
   }
+
   .container {
     background-color: #222;
   }
+
   h2 {
     border-bottom-color: #333;
   }
-  input, select {
+
+  input,
+  select {
     background-color: #333;
     border-color: #444;
     color: white;
   }
+
   .hint {
     color: #aaa;
   }
