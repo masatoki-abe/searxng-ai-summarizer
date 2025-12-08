@@ -57,7 +57,7 @@ ${text}
         }
 
         const candidate = data.candidates[0];
-        if (candidate.finishReason && candidate.finishReason !== "STOP") {
+        if (candidate.finishReason !== undefined && candidate.finishReason !== null && candidate.finishReason !== "STOP") {
             // Handle safety blocking or other reasons
             if (candidate.finishReason === "SAFETY") {
                 throw new Error("Summary generation was blocked by safety filters.");
