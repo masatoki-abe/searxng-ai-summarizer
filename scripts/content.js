@@ -47,7 +47,7 @@ function injectUI() {
     btn.onclick = handleSummarizeClick;
     btn.style.marginBottom = '0'; // Reset margin as it is in wrapper
 
-    // Create Summary Container
+    // Create Summary Container (initially hidden)
     const summaryContainer = document.createElement('div');
     summaryContainer.id = 'searxng-ai-summary-container';
     summaryContainer.style.display = 'none';
