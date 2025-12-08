@@ -1,6 +1,8 @@
 
 import { createClient } from './ai_client.js';
 
+console.log('Background Script Loaded');
+
 // Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === 'summarize') {
@@ -36,4 +38,3 @@ async function handleSummarizeRequest(text, sender, sendResponse) {
         });
     }
 }
-console.log('Background Script Loaded');
