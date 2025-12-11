@@ -55,6 +55,7 @@ function injectUI() {
     configBtn.className = 'ai-config-btn';
     configBtn.innerHTML = '⚙️';
     configBtn.title = '設定を開く';
+    configBtn.setAttribute('aria-label', '設定を開く');
     configBtn.onclick = () => {
         browser.runtime.sendMessage({ action: 'open_options' });
     };

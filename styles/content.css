@@ -125,8 +125,14 @@
     text-decoration: none;
 }
 
-.ai-config-btn:hover {
+.ai-config-btn:hover,
+.ai-config-btn:focus {
     background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ai-config-btn:focus-visible {
+    outline: 2px solid var(--color-btn-background, #3a6ea5);
+    outline-offset: -2px;
 }
 
 @media (prefers-color-scheme: dark) {
