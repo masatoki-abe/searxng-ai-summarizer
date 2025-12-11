@@ -8,6 +8,8 @@ browser.runtime.onMessage.addListener((request, sender) => {
     if (request.action === 'summarize') {
         // Return Promise to send response asynchronously
         return handleSummarizeRequest(request.text, sender);
+    } else if (request.action === 'open_options') {
+        browser.runtime.openOptionsPage();
     }
 });
 

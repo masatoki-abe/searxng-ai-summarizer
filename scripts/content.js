@@ -39,13 +39,29 @@ function injectUI() {
     wrapper.id = 'searxng-ai-wrapper';
     wrapper.className = 'searxng-ai-wrapper';
 
+    // Create Controls Container
+    const controls = document.createElement('div');
+    controls.className = 'ai-summary-controls';
+
     // Create Button
     const btn = document.createElement('button');
     btn.id = 'searxng-ai-summary-btn';
     btn.className = 'ai-summary-btn';
     btn.innerText = '✨ AIで要約を実行';
     btn.onclick = handleSummarizeClick;
-    btn.style.marginBottom = '0'; // Reset margin as it is in wrapper
+    btn.style.marginBottom = '0';
+
+    // Create Config Button
+    const configBtn = document.createElement('button');
+    configBtn.className = 'ai-config-btn';
+    configBtn.innerHTML = '⚙️';
+    configBtn.title = '設定を開く';
+    configBtn.onclick = () => {
+        browser.runtime.sendMessage({ action: 'open_options' });
+    };
+
+    controls.appendChild(btn);
+    controls.appendChild(configBtn);
 
     // Create Summary Container (initially hidden)
     const summaryContainer = document.createElement('div');
@@ -53,7 +69,7 @@ function injectUI() {
     summaryContainer.style.display = 'none';
 
     // Append to wrapper
-    wrapper.appendChild(btn);
+    wrapper.appendChild(controls);
     wrapper.appendChild(summaryContainer);
 
     // Inject wrapper before results
