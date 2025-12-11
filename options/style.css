@@ -85,6 +85,14 @@ button:hover {
     min-height: 20px;
 }
 
+.status.success {
+    color: #52c41a;
+}
+
+.status.error {
+    color: #ff4d4f;
+}
+
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
     body {
@@ -119,5 +127,13 @@ button:hover {
 
     a:visited {
         color: #68b5f9;
+    }
+
+    .status.success {
+        color: #6abe39;
+    }
+
+    .status.error {
+        color: #ff7875;
     }
 }

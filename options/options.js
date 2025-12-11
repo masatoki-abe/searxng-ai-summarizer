@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!apiKey) {
             statusDiv.textContent = 'APIキーを入力してください。';
-            statusDiv.style.color = '#ff4d4f';
+            statusDiv.className = 'status error';
             return;
         }
 
@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
             model
         }).then(() => {
             statusDiv.textContent = '設定を保存しました！';
-            statusDiv.style.color = '#52c41a';
+            statusDiv.className = 'status success';
             setTimeout(() => {
                 statusDiv.textContent = '';
+                statusDiv.className = 'status';
             }, 2000);
         });
     });
