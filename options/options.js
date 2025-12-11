@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('saveBtn');
     const statusDiv = document.getElementById('status');
 
-    // Load saved settings
+    // 保存された設定を読み込む
     browser.storage.local.get(['apiKey', 'model']).then((items) => {
         if (items.apiKey) apiKeyInput.value = items.apiKey;
         if (items.model) modelInput.value = items.model;

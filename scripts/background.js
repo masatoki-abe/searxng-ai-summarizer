@@ -3,10 +3,10 @@ import { createClient } from './ai_client.js';
 
 console.log('Background Script Loaded');
 
-// Listen for messages from content script
+// コンテンツスクリプトからのメッセージをリッスン
 browser.runtime.onMessage.addListener((request, sender) => {
     if (request.action === 'summarize') {
-        // Return Promise to send response asynchronously
+        // 非同期レスポンスのためにPromiseを返す
         return handleSummarizeRequest(request.text, sender);
     } else if (request.action === 'open_options') {
         browser.runtime.openOptionsPage();
@@ -18,7 +18,7 @@ async function handleSummarizeRequest(text, sender) {
         const settings = await browser.storage.local.get(['apiKey', 'model']);
 
         if (!settings.apiKey) {
-            return { success: false, error: 'Gemini API Key missing. Please open extension settings.' };
+            return { success: false, error: 'Gemini APIキーが設定されていません。拡張機能の設定画面を開いてください。' };
         }
 
         const client = createClient(settings.apiKey, settings.model);
@@ -34,7 +34,7 @@ async function handleSummarizeRequest(text, sender) {
         console.error("Summarization failed in background:", error);
         return {
             success: false,
-            error: error.message || "Unknown background error"
+            error: error.message || "バックグラウンドで不明なエラーが発生しました"
         };
     }
 }
