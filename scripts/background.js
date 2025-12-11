@@ -10,6 +10,7 @@ browser.runtime.onMessage.addListener((request, sender) => {
         return handleSummarizeRequest(request.text, sender);
     } else if (request.action === 'open_options') {
         browser.runtime.openOptionsPage();
+        return false;
     }
 });
 

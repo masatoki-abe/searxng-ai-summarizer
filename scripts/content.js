@@ -57,7 +57,8 @@ function injectUI() {
     configBtn.title = '設定を開く';
     configBtn.setAttribute('aria-label', '設定を開く');
     configBtn.onclick = () => {
-        browser.runtime.sendMessage({ action: 'open_options' });
+        browser.runtime.sendMessage({ action: 'open_options' })
+            .catch(err => console.warn("Failed to send open_options message:", err));
     };
 
     controls.appendChild(btn);
