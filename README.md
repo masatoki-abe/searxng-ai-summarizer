@@ -18,15 +18,15 @@ SearXNGの検索結果をAI（Google Gemini）を使って要約するFirefox拡
 
 ## 設定方法
 
-1. ブラウザのツールバーに追加されたアイコンをクリックして設定を開きます。
-2. **Gemini API Key** を入力します（[Google AI Studio](https://aistudio.google.com/) で取得可能です）。
+1. 拡張機能のアイコンをクリックし、「設定画面を開く」ボタンを押します（または検索結果画面の歯車アイコンをクリック）。
+2. 設定画面で **Gemini API Key** を入力します（[Google AI Studio](https://aistudio.google.com/) で取得可能です）。
 3. 必要に応じてモデル名（デフォルト: `gemini-2.5-flash-lite`）を変更します。
-4. "Save Settings" をクリックします。
+4. "設定を保存" ボタンをクリックします。
 
 ## 使い方
 
 1. 任意の [SearXNG インスタンス](https://searx.space/) で検索を行います。
-2. 検索結果ページの上部に表示される **「✨ Summarize Results (AI)」** ボタンをクリックします。
+2. 検索結果ページの上部に表示される **「✨ AIで要約を実行」** ボタンをクリックします。
 3. AIによる要約が生成され、表示されます。
 
 ## 開発

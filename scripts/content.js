@@ -1,20 +1,19 @@
-// Helper to identify if we are on a SearXNG page
+// SearXNGページ・要素判定
 function isSearxngPage() {
-    // Common SearXNG selectors
+    // 一般的なSearXNGのセレクタ
     const hasResultList = document.getElementById('urls') || document.getElementById('results') || document.querySelector('.result-list');
     const hasSearchInput = document.querySelector('input[name="q"]');
-    // Check footer or meta tags if needed, but existence of result list is usually good enough for "any" instance
-    // We can also check specific classes like .searxng-navbar, etc.
+    // 結果リストと検索ボックスの存在で判定する
     return !!(hasResultList && hasSearchInput);
 }
 
 function getResultSnippets() {
-    // Try to find results
+    // 検索結果の取得を試みる
     const results = document.querySelectorAll('.result');
     if (!results.length) return null;
 
     let combinedText = "";
-    // Limit to top 10 results to avoid token limits
+    // トークン制限を考慮し、トップ10件のみ対象とする
     const topResults = Array.from(results).slice(0, 10);
 
     topResults.forEach((el, index) => {
@@ -34,35 +33,54 @@ function injectUI() {
     const resultsContainer = document.getElementById('urls') || document.getElementById('results') || document.querySelector('#main_results');
     if (!resultsContainer) return;
 
-    // Create Wrapper
+    // ラッパー要素を作成
     const wrapper = document.createElement('div');
     wrapper.id = 'searxng-ai-wrapper';
     wrapper.className = 'searxng-ai-wrapper';
 
-    // Create Button
+    // コントロールコンテナを作成
+    const controls = document.createElement('div');
+    controls.className = 'ai-summary-controls';
+
+    // ボタンを作成
     const btn = document.createElement('button');
     btn.id = 'searxng-ai-summary-btn';
     btn.className = 'ai-summary-btn';
     btn.innerText = '✨ AIで要約を実行';
     btn.onclick = handleSummarizeClick;
-    btn.style.marginBottom = '0'; // Reset margin as it is in wrapper
+    btn.style.marginBottom = '0';
 
-    // Create Summary Container (initially hidden)
+    // 設定ボタンを作成
+    const configBtn = document.createElement('button');
+    configBtn.className = 'ai-config-btn';
+    configBtn.innerHTML = '⚙️';
+    configBtn.title = '設定を開く';
+    configBtn.setAttribute('aria-label', '設定を開く');
+    configBtn.onclick = () => {
+        browser.runtime.sendMessage({ action: 'open_options' })
+            .catch(err => console.warn("Failed to send open_options message:", err));
+    };
+
+    controls.appendChild(btn);
+    controls.appendChild(configBtn);
+
+    // 要約表示コンテナを作成（初期状態は非表示）
     const summaryContainer = document.createElement('div');
     summaryContainer.id = 'searxng-ai-summary-container';
     summaryContainer.style.display = 'none';
 
-    // Append to wrapper
-    wrapper.appendChild(btn);
+    // ラッパーに追加
+    wrapper.appendChild(controls);
     wrapper.appendChild(summaryContainer);
 
-    // Inject wrapper before results
+    // 検索結果の前に追加
+
     resultsContainer.parentNode.insertBefore(wrapper, resultsContainer);
 }
 
 async function handleSummarizeClick(e) {
     const btn = e.target;
-    // Use the container within our wrapper
+    // ラッパー内のコンテナを使用する
     const container = document.getElementById('searxng-ai-summary-container');
     const snippets = getResultSnippets();
 
@@ -74,7 +92,8 @@ async function handleSummarizeClick(e) {
     btn.disabled = true;
     btn.innerText = '要約を生成中...';
 
-    // Ensure container is visible
+    // コンテナを表示する
+
     if (container) {
         container.style.display = 'block';
         container.innerHTML = '<div class="ai-spinner"></div>';
@@ -82,7 +101,7 @@ async function handleSummarizeClick(e) {
 
     try {
         console.log("Sending request to background...");
-        // Await the response directly
+        // レスポンスを待機する
         const response = await browser.runtime.sendMessage({
             action: 'summarize',
             text: snippets
@@ -93,7 +112,7 @@ async function handleSummarizeClick(e) {
         if (response && response.success) {
             console.log("Success! Updating UI...");
 
-            // Re-fetch to be safe
+            // 安全のため再取得する
             const currentContainer = document.getElementById('searxng-ai-summary-container');
 
             if (currentContainer) {
@@ -106,27 +125,27 @@ async function handleSummarizeClick(e) {
                 `;
             } else {
                 console.error("Summary container missing.");
-                alert("Error: UI container missing.");
+                alert("エラー: AI要約結果の表示領域が見つかりません。");
             }
 
             btn.innerText = 'AIで要約を実行';
         } else {
-            const errorMsg = response?.error || browser.runtime.lastError?.message || "Unknown error";
+            const errorMsg = response?.error || browser.runtime.lastError?.message || "不明なエラーが発生しました";
             console.error("Async Error:", errorMsg);
             if (container) {
-                container.innerHTML = `<div style="color:red; font-weight:bold; padding:10px; border:1px solid red;">Error: ${errorMsg}</div>`;
+                container.innerHTML = `<div style="color:red; font-weight:bold; padding:10px; border:1px solid red;">エラー: ${errorMsg}</div>`;
             }
             btn.innerText = 'エラー - 再試行';
-            alert(`Summary Failed:\n${errorMsg}`);
+            alert(`要約に失敗しました:\n${errorMsg}`);
         }
 
     } catch (err) {
         console.error("Content Script Send Error:", err);
         if (container) {
-            container.innerHTML = `<div style="color:red">Error: ${err.message}</div>`;
+            container.innerHTML = `<div style="color:red">エラー: ${err.message}</div>`;
         }
         btn.innerText = 'エラー - 再試行';
-        alert(`Request Failed:\n${err.message}`);
+        alert(`リクエストに失敗しました:\n${err.message}`);
     } finally {
         btn.disabled = false;
     }
@@ -135,7 +154,7 @@ async function handleSummarizeClick(e) {
 function formatSummary(text) {
     if (!text) return '';
 
-    // Helper to escape HTML characters
+    // HTML文字をエスケープするヘルパー関数
     const escape = (str) => str.replace(/[&<>\n]/g, (tag) => {
         const chars = {
             '&': '&amp;',
@@ -146,20 +165,20 @@ function formatSummary(text) {
         return chars[tag] || tag;
     });
 
-    // Single pass replacement to ensure security
-    // Matches **bold** content OR individual special characters
-    // Using [\s\S] to match newlines within bold blocks
+    // 安全性を確保するため、1パスで置換を行う
+    // **太字** コンテンツ または 個別の特殊文字にマッチさせる
+    // [\s\S] を使用して、太字ブロック内の改行にもマッチさせる
     return text.replace(/(\*\*([\s\S]*?)\*\*)|([&<>\n])/g, (match, boldBlock, boldContent, specialChar) => {
         if (boldBlock) {
-            // If it's a bold block, escape the content and wrap in <b>
+            // 太字ブロックの場合、中身をエスケープして <b> で囲む
             return `<b>${escape(boldContent)}</b>`;
         }
-        // If it's a special char outside bold, just escape it
+        // 太字以外の特殊文字はそのままエスケープする
         return escape(match);
     });
 }
 
-// Run logic
+// 実行ロジック
 if (isSearxngPage()) {
     injectUI();
 }
